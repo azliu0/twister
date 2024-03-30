@@ -51,7 +51,10 @@ void canary()
 
 	printf("[" ANSI_GREEN "*" ANSI_CLEAR "] canary_id: %ld\n", canary);
 	printf("[" ANSI_BLUE "*" ANSI_CLEAR "] regenerate? (y/n) ");
-	fgets(userAction, 0xff, stdin);
+	if (fgets(userAction, 0xff, stdin) == NULL)
+	{
+		return;
+	}
 
 	while (1)
 	{
@@ -60,7 +63,10 @@ void canary()
 			canary = genRandLong(&rng);
 			printf("[" ANSI_GREEN "*" ANSI_CLEAR "] canary_id: %ld\n", canary);
 			printf("[" ANSI_BLUE "*" ANSI_CLEAR "] regenerate? (y/n) ");
-			fgets(userAction, 0xff, stdin);
+			if (fgets(userAction, 0xff, stdin) == NULL)
+			{
+				return;
+			}
 		}
 		else if (userAction[0] == 'n')
 		{
@@ -69,7 +75,10 @@ void canary()
 		else
 		{
 			printf("[" ANSI_RED "*" ANSI_CLEAR "] invalid action, please try again: ");
-			fgets(userAction, 0xff, stdin);
+			if (fgets(userAction, 0xff, stdin) == NULL)
+			{
+				return;
+			}
 		}
 	}
 }
@@ -78,13 +87,13 @@ void game()
 {
 	unsigned long canary_id = 0;
 	char input[0xff];
-	
-	while(1)
+
+	while (1)
 	{
 		puts("");
 		puts("      arithmetic game");
 		puts("");
-		
+
 		int first[NUM_QUESTIONS];
 		int second[NUM_QUESTIONS];
 
@@ -101,7 +110,7 @@ void game()
 			snprintf(ans, sizeof(ans), "%d", first[i] + second[i]);
 
 			printf("[" ANSI_BLUE "*" ANSI_CLEAR "] %d. %d + %d: ", i + 1, first[i], second[i]);
-			
+
 			gets(input);
 
 			if (strcmp(input, ans) == 0)
@@ -125,12 +134,18 @@ void game()
 		printf("[" ANSI_BLUE "*" ANSI_CLEAR "] play again? (y/n) ");
 
 		char playAgain[0xff];
-		fgets(playAgain, 0xff, stdin);
+		if (fgets(playAgain, 0xff, stdin) == NULL)
+		{
+			return;
+		}
 
 		while (playAgain[0] != 'y' && playAgain[0] != 'n')
 		{
 			printf("[" ANSI_RED "*" ANSI_CLEAR "] invalid action, please try again: ");
-			fgets(playAgain, 0xff, stdin);
+			if (fgets(playAgain, 0xff, stdin) == NULL)
+			{
+				return;
+			}
 		}
 
 		if (playAgain[0] == 'n')
@@ -168,9 +183,9 @@ void start()
 	char userAction[0xff];
 
 	welcome();
-	if (fgets(userAction, 0xff, stdin) == NULL) 
+	if (fgets(userAction, 0xff, stdin) == NULL)
 	{
-    return;
+		return;
 	}
 
 	while (1)
@@ -193,7 +208,7 @@ void start()
 		{
 			printf("[" ANSI_RED "*" ANSI_CLEAR "] invalid action, please try again: ");
 		}
-		
+
 		if (fgets(userAction, 0xff, stdin) == NULL)
 		{
 			return;
@@ -205,11 +220,11 @@ int main()
 {
 	setvbuf(stdout, NULL, _IONBF, 0);
 
-  gid_t gid = getegid();
+	gid_t gid = getegid();
 	setresgid(gid, gid, gid);
 
 	seed(&rng);
-  start();
+	start();
 
 	return 0;
 }
