@@ -86,15 +86,23 @@ void game()
 		puts("");
 		puts("      arithmetic game");
 		puts("");
+		
+		int first[NUM_QUESTIONS];
+		int second[NUM_QUESTIONS];
+
 		for (int i = 0; i < NUM_QUESTIONS; i++)
 		{
-			int num1 = rand() % 100 + 5;
-			int num2 = rand() % 100 + 5;
+			first[i] = rand() % 100 + 5;
+			second[i] = rand() % 100 + 5;
+		}
+
+		for (int i = 0; i < NUM_QUESTIONS; i++)
+		{
 			char ans[0xff];
 
-			snprintf(ans, sizeof(ans), "%d", num1 + num2);
+			snprintf(ans, sizeof(ans), "%d", first[i] + second[i]);
 
-			printf("%d. %d + %d: ", i + 1, num1, num2);
+			printf("%d. %d + %d: ", i + 1, first[i], second[i]);
 			gets(input);
 
 			if (strcmp(input, ans) == 0)
@@ -103,7 +111,10 @@ void game()
 			}
 			else
 			{
-				printf(ANSI_RED "Wrong! Your answer was: %s" ANSI_CLEAR "\n", ans);
+				printf(ANSI_RED "Wrong!\n");
+				printf("Your answer was: ");
+				printf(input);
+				printf("\nCorrect answer: %s" ANSI_CLEAR "\n", ans);
 				i--;
 			}
 		}
