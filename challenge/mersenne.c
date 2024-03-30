@@ -168,7 +168,10 @@ void start()
 	char userAction[0xff];
 
 	welcome();
-	gets(userAction, 0xff);
+	if (fgets(userAction, 0xff, stdin) == NULL) 
+	{
+    return;
+	}
 
 	while (1)
 	{
@@ -191,7 +194,10 @@ void start()
 			printf("[" ANSI_RED "*" ANSI_CLEAR "] invalid action, please try again: ");
 		}
 		
-		fgets(userAction, 0xff, stdin);
+		if (fgets(userAction, 0xff, stdin) == NULL)
+		{
+			return;
+		}
 	}
 }
 
