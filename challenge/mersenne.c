@@ -14,7 +14,7 @@
 #define ANSI_GREEN "\x1b[32m"
 #define ANSI_RED "\x1b[31m"
 
-#define NUM_QUESTIONS 10
+#define NUM_QUESTIONS 1
 
 MTRand rng;
 
@@ -47,33 +47,29 @@ void canary()
 	puts("");
 
 	unsigned long canary = genRandLong(&rng);
-	char userAction;
+	char userAction[0xff];
 
 	printf("[" ANSI_GREEN "*" ANSI_CLEAR "] canary_id: %ld\n", canary);
 	printf("[" ANSI_BLUE "*" ANSI_CLEAR "] regenerate? (y/n) ");
-	scanf(" %c", &userAction);
+	fgets(userAction, 0xff, stdin);
 
 	while (1)
 	{
-		if (userAction == 'y')
+		if (userAction[0] == 'y')
 		{
 			canary = genRandLong(&rng);
 			printf("[" ANSI_GREEN "*" ANSI_CLEAR "] canary_id: %ld\n", canary);
 			printf("[" ANSI_BLUE "*" ANSI_CLEAR "] regenerate? (y/n) ");
-			while (getchar() != '\n')
-				;
-			scanf(" %c", &userAction);
+			fgets(userAction, 0xff, stdin);
 		}
-		else if (userAction == 'n')
+		else if (userAction[0] == 'n')
 		{
 			return;
 		}
 		else
 		{
 			printf("[" ANSI_RED "*" ANSI_CLEAR "] invalid action, please try again: ");
-			while (getchar() != '\n')
-				;
-			scanf(" %c", &userAction);
+			fgets(userAction, 0xff, stdin);
 		}
 	}
 }
@@ -85,10 +81,6 @@ void game()
 	
 	while(1)
 	{
-		while(getchar() != '\n');
-
-		time_t start_time = time(NULL);
-
 		puts("");
 		puts("      arithmetic game");
 		puts("");
@@ -126,27 +118,22 @@ void game()
 			}
 		}
 
-		time_t end_time = time(NULL);
-
-		double time_taken = difftime(end_time, start_time); 
-
 		puts("");
-		printf("      you finished in %.2f seconds!\n", time_taken);
+		puts("      you finished!");
 		puts("");
 
 		printf("[" ANSI_BLUE "*" ANSI_CLEAR "] play again? (y/n) ");
 
-		char playAgain;
-		scanf(" %c", &playAgain);
-		while (playAgain != 'y' && playAgain != 'n')
+		char playAgain[0xff];
+		fgets(playAgain, 0xff, stdin);
+
+		while (playAgain[0] != 'y' && playAgain[0] != 'n')
 		{
 			printf("[" ANSI_RED "*" ANSI_CLEAR "] invalid action, please try again: ");
-			while (getchar() != '\n')
-				;
-			scanf(" %c", &playAgain);
+			fgets(playAgain, 0xff, stdin);
 		}
 
-		if (playAgain != 'y')
+		if (playAgain[0] == 'n')
 		{
 			return;
 		}
@@ -178,24 +165,24 @@ void welcome()
 
 void start()
 {
-	char userAction;
+	char userAction[0xff];
 
 	welcome();
-	scanf(" %c", &userAction);
+	fgets(userAction, 0xff, stdin);
 
 	while (1)
 	{
-		if (userAction == 'c')
+		if (userAction[0] == 'c')
 		{
 			canary();
 			welcome();
 		}
-		else if (userAction == 'p')
+		else if (userAction[0] == 'p')
 		{
 			game();
 			welcome();
 		}
-		else if (userAction == 'e')
+		else if (userAction[0] == 'e')
 		{
 			break;
 		}
@@ -203,19 +190,18 @@ void start()
 		{
 			printf("[" ANSI_RED "*" ANSI_CLEAR "] invalid action, please try again: ");
 		}
-		while (getchar() != '\n')
-			;
-		scanf(" %c", &userAction);
+		
+		fgets(userAction, 0xff, stdin);
 	}
 }
 
 int main()
 {
-	gid_t gid = getegid();
+  gid_t gid = getegid();
 	setresgid(gid, gid, gid);
 
 	seed(&rng);
-	start();
+  start();
 
 	return 0;
 }
