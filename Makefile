@@ -9,7 +9,7 @@ LIB_SRC=twister/mtwister.c
 LIB_OBJ=$(LIB_SRC:.c=.o)
 
 # program files
-PROG_SRC=mersenne.c
+PROG_SRC=src/mersenne.c
 PROG_TARGET=mersenne
 
 .PHONY: all clean
@@ -21,6 +21,7 @@ all: $(LIB_NAME) $(PROG_TARGET)
 	$(CC) -fPIC -c $< -o $@ $(CFLAGS)
 
 # create shared library from object file
+# sudo cp $(LIB_NAME) /usr/local/lib
 $(LIB_NAME): $(LIB_OBJ)
 	$(CC) -shared -o $@ $^
 

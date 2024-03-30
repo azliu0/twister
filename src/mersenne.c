@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "twister/mtwister.h"
+#include "mtwister.h"
 
 #define ANSI_BOLD       "\x1b[1m"
 #define ANSI_CLEAR      "\x1b[0m"
