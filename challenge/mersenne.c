@@ -168,7 +168,7 @@ void start()
 	char userAction[0xff];
 
 	welcome();
-	fgets(userAction, 0xff, stdin);
+	gets(userAction, 0xff);
 
 	while (1)
 	{
@@ -197,6 +197,8 @@ void start()
 
 int main()
 {
+	setvbuf(stdout, NULL, _IONBF, 0);
+
   gid_t gid = getegid();
 	setresgid(gid, gid, gid);
 
