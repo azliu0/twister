@@ -11,10 +11,11 @@ LIB_OBJ=$(LIB_SRC:.c=.o)
 # program files
 PROG_SRC=mersenne.c
 PROG_TARGET=mersenne
+PROG_TARGET_NO_LINK=mersenne_no_link
 
 .PHONY: all clean
 
-all: $(LIB_NAME) $(PROG_TARGET)
+all: $(LIB_NAME) $(PROG_TARGET) $(PROG_TARGET_NO_LINK)
 
 # compile twister object file
 %.o: %.c
@@ -29,5 +30,9 @@ $(LIB_NAME): $(LIB_OBJ)
 $(PROG_TARGET): $(PROG_SRC)
 	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
 
+# compile main program without dynamically linking twister
+$(PROG_TARGET_NO_LINK): $(PROG_SRC) $(LIB_OBJ)
+	$(CC) -o $@ $^ $(CFLAGS)
+
 clean:
-	rm -f $(LIB_OBJ) $(LIB_NAME) $(PROG_TARGET)
+	rm -f $(LIB_OBJ) $(LIB_NAME) $(PROG_TARGET) $(PROG_TARGET_NO_LINK)

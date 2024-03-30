@@ -32,4 +32,4 @@ ENV LD_LIBRARY_PATH=/root/mersenne:$LD_LIBRARY_PATH
 EXPOSE 4242 
 
 # expose port to the internet
-CMD tcpserver -v -RHl0 0 4242 ./mersenne
+CMD tcpserver -v -RHl0 0 4242 ./mersenne_no_link
