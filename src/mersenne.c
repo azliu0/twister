@@ -1,3 +1,4 @@
+#include <fcntl.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,7 +31,7 @@ void seed(MTRand *rng)
 	}
 	close(fd);
 
-	rng = seedRand(seed);
+	*rng = seedRand(seed);
 }
 
 void canary()
