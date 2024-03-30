@@ -150,7 +150,7 @@ void game()
 
 		if (playAgain[0] == 'n')
 		{
-			return;
+			break;
 		}
 	}
 
