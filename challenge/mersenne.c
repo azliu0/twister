@@ -14,7 +14,7 @@
 #define ANSI_GREEN "\x1b[32m"
 #define ANSI_RED "\x1b[31m"
 
-#define NUM_QUESTIONS 1
+#define NUM_QUESTIONS 10
 
 MTRand rng;
 
