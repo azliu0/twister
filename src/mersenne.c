@@ -77,7 +77,7 @@ int main() {
 	setresgid(gid, gid, gid);
 	
 	test_rand();
-	start();
+	// start();
 
 	return 0;
 }
