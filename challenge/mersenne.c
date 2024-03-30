@@ -12,7 +12,6 @@
 #define ANSI_RED "\x1b[31m"
 
 MTRand rng;
-uint64_t global_canary;
 
 void seed(MTRand *rng)
 {
@@ -87,7 +86,7 @@ void start()
 
 void check_canary(uint64_t canary)
 {
-	if (canary != global_canary)
+	if (canary != genRandLong(&rng))
 	{
 		printf("***** stack smashing detected *****");
 		exit(1);

@@ -9,8 +9,8 @@ LIB_SRC=twister/mtwister.c
 LIB_OBJ=$(LIB_SRC:.c=.o)
 
 # program files
-PROG_SRC=src/mersenne.c
-PROG_TARGET=mersenne
+PROG_SRC=challenge/mersenne.c
+PROG_TARGET=challenge/mersenne
 
 .PHONY: all clean
 
