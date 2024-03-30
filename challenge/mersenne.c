@@ -85,7 +85,7 @@ void canary()
 
 void game()
 {
-	unsigned long canary_id = 0;
+	unsigned long canary_id = genRandLongAndKeepState(&rng);
 	char input[0xff];
 
 	while (1)
@@ -154,7 +154,7 @@ void game()
 		}
 	}
 
-	if (canary_id != 0x0 && canary_id != genRandLong(&rng))
+	if (canary_id != genRandLong(&rng))
 	{
 		printf("***** stack smashing detected *****");
 		exit(1);
