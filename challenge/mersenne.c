@@ -49,8 +49,8 @@ void canary()
 	unsigned long canary = genRandLong(&rng);
 	char userAction;
 
-	printf("[" ANSI_BLUE "*" ANSI_CLEAR "] canary_id: %ld\n", canary);
-	printf("[" ANSI_GREEN "*" ANSI_CLEAR "] regenerate? (y/n) ");
+	printf("[" ANSI_GREEN "*" ANSI_CLEAR "] canary_id: %ld\n", canary);
+	printf("[" ANSI_BLUE "*" ANSI_CLEAR "] regenerate? (y/n) ");
 	scanf(" %c", &userAction);
 
 	while (1)
@@ -58,8 +58,8 @@ void canary()
 		if (userAction == 'y')
 		{
 			canary = genRandLong(&rng);
-			printf("[" ANSI_BLUE "*" ANSI_CLEAR "] canary_id: %ld\n", canary);
-			printf("[" ANSI_GREEN "*" ANSI_CLEAR "] regenerate? (y/n) ");
+			printf("[" ANSI_GREEN "*" ANSI_CLEAR "] canary_id: %ld\n", canary);
+			printf("[" ANSI_BLUE "*" ANSI_CLEAR "] regenerate? (y/n) ");
 			while (getchar() != '\n')
 				;
 			scanf(" %c", &userAction);
@@ -70,7 +70,7 @@ void canary()
 		}
 		else
 		{
-			printf("[" ANSI_GREEN "*" ANSI_CLEAR "] invalid action, please try again: ");
+			printf("[" ANSI_RED "*" ANSI_CLEAR "] invalid action, please try again: ");
 			while (getchar() != '\n')
 				;
 			scanf(" %c", &userAction);
@@ -80,13 +80,14 @@ void canary()
 
 void game()
 {
-	char playAgain;
-	unsigned long canary_id;
+	unsigned long canary_id = 0;
 	char input[0xff];
 	
-	do
+	while(1)
 	{
 		while(getchar() != '\n');
+
+		time_t start_time = time(NULL);
 
 		puts("");
 		puts("      arithmetic game");
@@ -107,34 +108,55 @@ void game()
 
 			snprintf(ans, sizeof(ans), "%d", first[i] + second[i]);
 
-			printf("%d. %d + %d: ", i + 1, first[i], second[i]);
+			printf("[" ANSI_BLUE "*" ANSI_CLEAR "] %d. %d + %d: ", i + 1, first[i], second[i]);
 			
 			gets(input);
 
 			if (strcmp(input, ans) == 0)
 			{
-				printf(ANSI_GREEN "Correct!" ANSI_CLEAR "\n");
+				printf("[" ANSI_GREEN "*" ANSI_CLEAR "]" ANSI_GREEN " Correct!" ANSI_CLEAR "\n");
 			}
 			else
 			{
-				printf(ANSI_RED "Wrong!\n");
-				printf("Your answer was: ");
+				printf("[" ANSI_RED "*" ANSI_CLEAR "]" ANSI_RED " Wrong!" ANSI_CLEAR "\n");
+				printf("[" ANSI_RED "*" ANSI_CLEAR "]" ANSI_RED " Your answer was: ");
 				printf(input);
 				printf(ANSI_CLEAR "\n");
 				i--;
 			}
 		}
 
-		printf("play again? (y/n) ");
+		time_t end_time = time(NULL);
+
+		double time_taken = difftime(end_time, start_time); 
+
+		puts("");
+		printf("      you finished in %.2f seconds!\n", time_taken);
+		puts("");
+
+		printf("[" ANSI_BLUE "*" ANSI_CLEAR "] play again? (y/n) ");
+
+		char playAgain;
 		scanf(" %c", &playAgain);
 		while (playAgain != 'y' && playAgain != 'n')
 		{
-			printf("[" ANSI_GREEN "*" ANSI_CLEAR "] invalid action, please try again: ");
+			printf("[" ANSI_RED "*" ANSI_CLEAR "] invalid action, please try again: ");
 			while (getchar() != '\n')
 				;
 			scanf(" %c", &playAgain);
 		}
-	} while (playAgain == 'y');
+
+		if (playAgain != 'y')
+		{
+			return;
+		}
+	}
+
+	if (canary_id != 0x0 && canary_id != genRandLong(&rng))
+	{
+		printf("***** stack smashing detected *****");
+		exit(1);
+	}
 }
 
 void welcome()
@@ -151,7 +173,7 @@ void welcome()
 	puts("  /_/`\"\\\\___");
 	puts("       `~~~`");
 	puts("");
-	printf("[" ANSI_GREEN "*" ANSI_CLEAR "]: ");
+	printf("[" ANSI_BLUE "*" ANSI_CLEAR "]: ");
 }
 
 void start()
@@ -179,20 +201,11 @@ void start()
 		}
 		else
 		{
-			printf("[" ANSI_GREEN "*" ANSI_CLEAR "] invalid action, please try again: ");
+			printf("[" ANSI_RED "*" ANSI_CLEAR "] invalid action, please try again: ");
 		}
 		while (getchar() != '\n')
 			;
 		scanf(" %c", &userAction);
-	}
-}
-
-void check_canary(uint64_t canary)
-{
-	if (canary != genRandLong(&rng))
-	{
-		printf("***** stack smashing detected *****");
-		exit(1);
 	}
 }
 
