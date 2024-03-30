@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 #include "mtwister.h"
@@ -11,6 +12,8 @@
 #define ANSI_BLUE "\x1b[34m"
 #define ANSI_GREEN "\x1b[32m"
 #define ANSI_RED "\x1b[31m"
+
+#define NUM_QUESTIONS 5
 
 MTRand rng;
 
@@ -47,14 +50,15 @@ void canary()
 	printf("[" ANSI_GREEN "*" ANSI_CLEAR "] regenerate? (y/n) ");
 	scanf(" %c", &userAction);
 
-	while(1)
+	while (1)
 	{
 		if (userAction == 'y')
 		{
 			canary = genRandLong(&rng);
 			printf("[" ANSI_BLUE "*" ANSI_CLEAR "] canary_id: %ld\n", canary);
 			printf("[" ANSI_GREEN "*" ANSI_CLEAR "] regenerate? (y/n) ");
-			while (getchar() != '\n');
+			while (getchar() != '\n')
+				;
 			scanf(" %c", &userAction);
 		}
 		else if (userAction == 'n')
@@ -64,7 +68,8 @@ void canary()
 		else
 		{
 			printf("[" ANSI_GREEN "*" ANSI_CLEAR "] invalid action, please try again: ");
-			while (getchar() != '\n');
+			while (getchar() != '\n')
+				;
 			scanf(" %c", &userAction);
 		}
 	}
@@ -72,11 +77,54 @@ void canary()
 
 void game()
 {
-	printf("playing game\n");
+	char playAgain;
+	unsigned long canary_id;
+	char input[0xff];
+
+	do
+	{
+		puts("");
+		puts("      arithmetic game");
+		puts("");
+		for (int i = 0; i < NUM_QUESTIONS; i++)
+		{
+			int num1 = rand() % 100 + 5;
+			int num2 = rand() % 100 + 5;
+			char ans[0xff];
+
+			snprintf(ans, sizeof(ans), "%d", num1 + num2);
+
+			printf("%d. %d + %d: ", i + 1, num1, num2);
+			gets(input);
+
+			if (strcmp(input, ans) == 0)
+			{
+				printf(ANSI_GREEN "Correct!" ANSI_CLEAR "\n");
+			}
+			else
+			{
+				printf(ANSI_RED "Wrong! Your answer was: %s" ANSI_CLEAR "\n", ans);
+				i--;
+			}
+		}
+
+		printf("play again? (y/n) ");
+		while (getchar() != '\n')
+			;
+		scanf(" %c", &playAgain);
+
+		while (playAgain != 'y' && playAgain != 'n')
+		{
+			printf("[" ANSI_GREEN "*" ANSI_CLEAR "] invalid action, please try again: ");
+			while (getchar() != '\n')
+				;
+			scanf(" %c", &playAgain);
+		}
+	} while (playAgain == 'y');
 }
 
 void welcome()
-{	
+{
 	puts("");
 	puts("       .-\"-.");
 	puts("      /  ,~a\\_");
@@ -105,13 +153,11 @@ void start()
 		{
 			canary();
 			welcome();
-			while (getchar() != '\n');
-			scanf(" %c", &userAction);
 		}
 		else if (userAction == 'p')
 		{
 			game();
-			break;
+			welcome();
 		}
 		else if (userAction == 'e')
 		{
@@ -120,9 +166,10 @@ void start()
 		else
 		{
 			printf("[" ANSI_GREEN "*" ANSI_CLEAR "] invalid action, please try again: ");
-			while (getchar() != '\n');
-			scanf(" %c", &userAction);
 		}
+		while (getchar() != '\n')
+			;
+		scanf(" %c", &userAction);
 	}
 }
 
