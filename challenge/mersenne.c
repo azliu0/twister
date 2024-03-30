@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <unistd.h>
 
 #include "mtwister.h"
@@ -13,12 +14,14 @@
 #define ANSI_GREEN "\x1b[32m"
 #define ANSI_RED "\x1b[31m"
 
-#define NUM_QUESTIONS 5
+#define NUM_QUESTIONS 10
 
 MTRand rng;
 
 void seed(MTRand *rng)
 {
+	srand((unsigned int)time(NULL));
+
 	int fd = open("/dev/urandom", O_RDONLY);
 	if (fd == -1)
 	{
@@ -80,9 +83,11 @@ void game()
 	char playAgain;
 	unsigned long canary_id;
 	char input[0xff];
-
+	
 	do
 	{
+		while(getchar() != '\n');
+
 		puts("");
 		puts("      arithmetic game");
 		puts("");
@@ -103,6 +108,7 @@ void game()
 			snprintf(ans, sizeof(ans), "%d", first[i] + second[i]);
 
 			printf("%d. %d + %d: ", i + 1, first[i], second[i]);
+			
 			gets(input);
 
 			if (strcmp(input, ans) == 0)
@@ -114,16 +120,13 @@ void game()
 				printf(ANSI_RED "Wrong!\n");
 				printf("Your answer was: ");
 				printf(input);
-				printf("\nCorrect answer: %s" ANSI_CLEAR "\n", ans);
+				printf(ANSI_CLEAR "\n");
 				i--;
 			}
 		}
 
 		printf("play again? (y/n) ");
-		while (getchar() != '\n')
-			;
 		scanf(" %c", &playAgain);
-
 		while (playAgain != 'y' && playAgain != 'n')
 		{
 			printf("[" ANSI_GREEN "*" ANSI_CLEAR "] invalid action, please try again: ");
