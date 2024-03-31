@@ -14,8 +14,8 @@
 #define m 397
 #define r 31
 #define a 0x9908B0DF
-#define mask_upper(x) (x & ((1 << w) - (1 << r))) // upper w-r bits
-#define mask_lower(x) (x & ((1 << r) - 1))        // lower r bits
+#define mask_upper(x) (x & ((1ULL << w) - (1ULL << r))) // upper w-r bits
+#define mask_lower(x) (x & ((1ULL << r) - 1))           // lower r bits
 
 // tempering parameters
 #define u 11
@@ -43,7 +43,7 @@ void seed_rand(mt19937 *rng, uint32_t seed)
     rng->mt[0] = seed;
     for (int i = 1; i < n; i++)
     {
-        rng->mt[i] = f * (rng->mt[i - 1] ^ (rng->mt[i - 1] >> (w - 2))) + i;
+        rng->mt[i] = 1ULL * f * (rng->mt[i - 1] ^ (rng->mt[i - 1] >> (w - 2))) + i;
     }
     rng->index = n;
 }
@@ -100,16 +100,16 @@ uint32_t gen_rand_no_state_update(mt19937 *rng)
 /**
  * returns x where y = x ^ (x >> shamt)
  * main idea here is to telescope:
- *     (x                     ) ^ (x >>           shamt)
- *   ^ (x >>             shamt) ^ (x >>         2*shamt)
- *   ^ (x >>           2*shamt) ^ (x >>         3*shamt)
+ *     (x                   ) ^ (x >>           shamt)
+ *   ^ (x >>           shamt) ^ (x >>         2*shamt)
+ *   ^ (x >>         2*shamt) ^ (x >>         3*shamt)
  *   ...
- *   ^ (x >> (w/shamt-1)*shamt) ^ (x >> (w/shamt)*shamt) = x.
+ *   ^ (x >> (w/shamt)*shamt) ^ (0) = x.
  */
 uint32_t un_xor_right(uint32_t y, int shamt)
 {
     uint32_t x = y;
-    for (int i = 1; i < w / shamt; i++)
+    for (int i = 1; i <= w / shamt; i++)
     {
         x ^= (y >> (i * shamt));
     }
