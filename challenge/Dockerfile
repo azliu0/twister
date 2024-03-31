@@ -28,7 +28,7 @@ RUN make
 # expose .so to the executable
 ENV LD_LIBRARY_PATH=/root/mersenne:$LD_LIBRARY_PATH
 
-# expose port to ec2 box
+# expose port to box
 EXPOSE 4242 
 
 # expose port to the internet

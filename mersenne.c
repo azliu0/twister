@@ -6,7 +6,7 @@
 #include <time.h>
 #include <unistd.h>
 
-#include "mtwister.h"
+#include "mt19937.h"
 
 #define ANSI_BOLD "\x1b[1m"
 #define ANSI_CLEAR "\x1b[0m"
@@ -16,9 +16,9 @@
 
 #define NUM_QUESTIONS 10
 
-MTRand rng;
+mt19937 rng;
 
-void seed(MTRand *rng)
+void seed(mt19937 *rng)
 {
 	srand((unsigned int)time(NULL));
 
@@ -37,7 +37,7 @@ void seed(MTRand *rng)
 	}
 	close(fd);
 
-	*rng = seedRand(seed);
+	seed_rand(rng, seed);
 }
 
 void canary()

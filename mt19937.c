@@ -119,7 +119,7 @@ uint32_t un_xor_right(uint32_t y, int shamt)
  * returns x where y = x ^ ((x << shamt) & mask)
  * main idea here is to directly manipulate the bits.
  *
- * visual representaiton of y:
+ * split y into segments of size shamt:
  *
  * --|--shamt--|--shamt--|--...--|--shamt--|--shamt--|--shamt--|
  * xor
