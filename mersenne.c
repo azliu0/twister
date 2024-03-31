@@ -56,7 +56,7 @@ void canary()
 	uint32_t canary = gen_rand(&rng);
 	char userAction[0xff];
 
-	printf("[" ANSI_GREEN "*" ANSI_CLEAR "] canary_id: %ld\n", canary);
+	printf("[" ANSI_GREEN "*" ANSI_CLEAR "] canary_id: %u\n", canary);
 	printf("[" ANSI_BLUE "*" ANSI_CLEAR "] regenerate? (y/n) ");
 	if (fgets(userAction, 0xff, stdin) == NULL)
 	{
@@ -68,7 +68,7 @@ void canary()
 		if (userAction[0] == 'y')
 		{
 			canary = gen_rand(&rng);
-			printf("[" ANSI_GREEN "*" ANSI_CLEAR "] canary_id: %ld\n", canary);
+			printf("[" ANSI_GREEN "*" ANSI_CLEAR "] canary_id: %u\n", canary);
 			printf("[" ANSI_BLUE "*" ANSI_CLEAR "] regenerate? (y/n) ");
 			if (fgets(userAction, 0xff, stdin) == NULL)
 			{

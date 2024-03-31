@@ -8,7 +8,9 @@
 #ifndef MT19937_H
 #define MT19937_H
 
+#include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 // state vector size
 #define n 624
