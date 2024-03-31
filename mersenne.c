@@ -36,7 +36,7 @@ void seed(mt19937 *rng)
 		exit(1);
 	}
 
-	unsigned long seed;
+	uint32_t seed;
 	if (read(fd, &seed, sizeof(seed)) != sizeof(seed))
 	{
 		puts("error reading /dev/urandom");
@@ -53,7 +53,7 @@ void canary()
 	puts("      canary select");
 	puts("");
 
-	unsigned long canary = genRandLong(&rng);
+	uint32_t canary = gen_rand(&rng);
 	char userAction[0xff];
 
 	printf("[" ANSI_GREEN "*" ANSI_CLEAR "] canary_id: %ld\n", canary);
@@ -67,7 +67,7 @@ void canary()
 	{
 		if (userAction[0] == 'y')
 		{
-			canary = genRandLong(&rng);
+			canary = gen_rand(&rng);
 			printf("[" ANSI_GREEN "*" ANSI_CLEAR "] canary_id: %ld\n", canary);
 			printf("[" ANSI_BLUE "*" ANSI_CLEAR "] regenerate? (y/n) ");
 			if (fgets(userAction, 0xff, stdin) == NULL)
@@ -92,7 +92,7 @@ void canary()
 
 void game()
 {
-	unsigned long canary_id = genRandLongAndKeepState(&rng);
+	uint32_t canary_id = gen_rand_no_state_update(&rng);
 	volatile char input[0xff];
 
 	while (1)
@@ -161,7 +161,7 @@ void game()
 		}
 	}
 
-	if (canary_id != genRandLong(&rng))
+	if (canary_id != gen_rand(&rng))
 	{
 		printf("***** stack smashing detected *****");
 		exit(1);
