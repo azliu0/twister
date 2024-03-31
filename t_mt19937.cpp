@@ -8,12 +8,15 @@
 #include <random>
 #include "mt19937.h"
 
+#define SEEDS 100
+#define SEQ_LEN 1000
+
 int main()
 {
     std::random_device rd;
 
     // generator correctness test
-    for (int _ = 0; _ < 5; _++)
+    for (int _ = 0; _ < SEEDS; _++)
     {
         uint32_t seed = rd();
 
@@ -21,7 +24,7 @@ int main()
         mt19937 mt_impl;
         seed_rand(&mt_impl, seed);
 
-        for (int i = 0; i < 1000; i++)
+        for (int i = 0; i < SEQ_LEN; i++)
         {
             if (mt_base() != gen_rand(&mt_impl))
             {
@@ -32,7 +35,7 @@ int main()
     }
 
     // predictor correctness test
-    for (int _ = 0; _ < 5; _++)
+    for (int _ = 0; _ < SEEDS; _++)
     {
         uint32_t seed = rd();
 
@@ -53,14 +56,14 @@ int main()
             return 1;
         }
 
-        // for (int i = 0; i < 1000; i++)
-        // {
-        //     if (mt_base() != gen_rand(&mt_impl))
-        //     {
-        //         printf("predictor test failed\n");
-        //         return 1;
-        //     }
-        // }
+        for (int i = 0; i < SEQ_LEN; i++)
+        {
+            if (mt_base() != gen_rand(&mt_impl))
+            {
+                printf("predictor test failed\n");
+                return 1;
+            }
+        }
     }
 
     printf("tests passed\n");
