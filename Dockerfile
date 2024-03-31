@@ -10,7 +10,8 @@ RUN apt-get update && \
 # copy files
 COPY Makefile /root/mersenne/
 COPY mersenne.c /root/mersenne/
-COPY twister/ /root/mersenne/twister/
+COPY mt19937.c /root/mersenne/
+COPY mt19937.h /root/mersenne/
 
 WORKDIR /root/mersenne/
 
@@ -23,13 +24,12 @@ RUN chmod 600 flag.txt
 RUN chmod 4655 mersenne.c
 
 # build executable
+RUN mkdir challenge
 RUN make
-
-# expose .so to the executable
-ENV LD_LIBRARY_PATH=/root/mersenne:$LD_LIBRARY_PATH
+RUN mv challenge/mersenne .
 
 # expose port to box
 EXPOSE 4242 
 
 # expose port to the internet
-CMD tcpserver -v -RHl0 0 4242 ./mersenne_no_link
+CMD tcpserver -v -RHl0 0 4242 ./mersenne
