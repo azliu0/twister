@@ -41,7 +41,7 @@ uint32_t gen_rand_no_state_update(mt19937 *rand);
 
 /**
  * updates internal state of generator given list of outputs, and predicts next number
- * throws if nums does not contain exactly n numbers
+ * assumes nums is an array of n numbers
  */
 uint32_t predict(mt19937 *rand, uint32_t *nums);
 

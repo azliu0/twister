@@ -165,12 +165,6 @@ uint32_t un_temper(uint32_t y)
 
 uint32_t predict(mt19937 *rng, uint32_t *nums)
 {
-    if (sizeof(nums) / sizeof(uint32_t) != n)
-    {
-        printf("nums must contain exactly %d numbers\n", n);
-        exit(1);
-    }
-
     for (int i = 0; i < n; i++)
     {
         rng->mt[i] = un_temper(nums[i]);
