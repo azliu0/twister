@@ -6,6 +6,6 @@ running `make` in the root directory compiles the challenge binary into this fol
 
 ## deploy
 
-TODO — details have not been fleshed out yet
+TODO
 
 (for the time being, run `deploy.sh`)
