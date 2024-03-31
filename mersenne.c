@@ -93,7 +93,7 @@ void canary()
 void game()
 {
 	unsigned long canary_id = genRandLongAndKeepState(&rng);
-	char input[0xff];
+	volatile char input[0xff];
 
 	while (1)
 	{
