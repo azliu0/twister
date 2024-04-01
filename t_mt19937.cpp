@@ -32,6 +32,7 @@ protected:
     }
 };
 
+// generator implementation is consistent with STL
 TEST_F(MT19937Test, Generator)
 {
     for (int _ = 0; _ < SEEDS; _++)
@@ -45,6 +46,7 @@ TEST_F(MT19937Test, Generator)
     }
 }
 
+// predictor predicts a single value correctly
 TEST_F(MT19937Test, PredictorSingle)
 {
     for (int _ = 0; _ < SEEDS; _++)
@@ -61,6 +63,7 @@ TEST_F(MT19937Test, PredictorSingle)
     }
 }
 
+// predictor predicts many values correctly
 TEST_F(MT19937Test, PredictorMany)
 {
     for (int _ = 0; _ < SEEDS; _++)
@@ -82,6 +85,7 @@ TEST_F(MT19937Test, PredictorMany)
     }
 }
 
+// predictor updates state correctly
 TEST_F(MT19937Test, PredictorSelfConsistent)
 {
     for (int _ = 0; _ < SEEDS; _++)
@@ -102,6 +106,7 @@ TEST_F(MT19937Test, PredictorSelfConsistent)
         {
             EXPECT_EQ(mt_impl.get()->mt[i], mt_impl2.get()->mt[i]);
         }
+
         EXPECT_EQ(mt_impl.get()->index, mt_impl2.get()->index);
     }
 }
