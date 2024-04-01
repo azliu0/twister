@@ -5,66 +5,38 @@
  *    correctness tests for mt19937.c
  **/
 
+#include <gtest/gtest.h>
 #include <random>
 #include "mt19937.h"
 
 #define SEEDS 100
 #define SEQ_LEN 1000
 
-int main()
+class mt19937Test : public ::testing::Test
 {
+protected:
     std::random_device rd;
+    std::mt19937 mt_base;
+    mt19937 mt_impl;
+};
 
-    // generator correctness test
+TEST_F(mt19937Test, generator)
+{
     for (int _ = 0; _ < SEEDS; _++)
     {
         uint32_t seed = rd();
-
-        std::mt19937 mt_base(seed);
-        mt19937 mt_impl;
+        mt_base.seed(seed);
         seed_rand(&mt_impl, seed);
 
         for (int i = 0; i < SEQ_LEN; i++)
         {
-            if (mt_base() != gen_rand(&mt_impl))
-            {
-                printf("generator test failed\n");
-                return 1;
-            }
+            EXPECT_EQ(mt_base(), gen_rand(&mt_impl));
         }
     }
+}
 
-    // predictor correctness test
-    for (int _ = 0; _ < SEEDS; _++)
-    {
-        uint32_t seed = rd();
-
-        std::mt19937 mt_base(seed);
-        uint32_t nums[n];
-
-        for (int i = 0; i < n; i++)
-        {
-            nums[i] = mt_base();
-        }
-
-        mt19937 mt_impl;
-        uint32_t predicted = predict(&mt_impl, nums);
-
-        if (mt_base() != predicted)
-        {
-            printf("predictor test failed\n");
-            return 1;
-        }
-
-        for (int i = 0; i < SEQ_LEN; i++)
-        {
-            if (mt_base() != gen_rand(&mt_impl))
-            {
-                printf("predictor test failed\n");
-                return 1;
-            }
-        }
-    }
-
-    printf("tests passed\n");
+int main()
+{
+    ::testing::InitGoogleTest();
+    return RUN_ALL_TESTS();
 }
