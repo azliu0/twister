@@ -82,6 +82,30 @@ TEST_F(MT19937Test, PredictorMany)
     }
 }
 
+TEST_F(MT19937Test, PredictorSelfConsistent)
+{
+    for (int _ = 0; _ < SEEDS; _++)
+    {
+        seed_mts();
+
+        std::unique_ptr<mt19937> mt_impl2 = std::make_unique<mt19937>();
+        uint32_t state[n];
+
+        for (int i = 0; i < n; i++)
+        {
+            state[i] = gen_rand(mt_impl.get());
+        }
+
+        EXPECT_EQ(gen_rand(mt_impl.get()), predict(mt_impl2.get(), state));
+
+        for (int i = 0; i < n; i++)
+        {
+            EXPECT_EQ(mt_impl.get()->mt[i], mt_impl2.get()->mt[i]);
+        }
+        EXPECT_EQ(mt_impl.get()->index, mt_impl2.get()->index);
+    }
+}
+
 int main()
 {
     ::testing::InitGoogleTest();
