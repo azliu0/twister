@@ -12,12 +12,17 @@
 #define SEEDS 100
 #define SEQ_LEN 1000
 
-class mt19937Test : public ::testing::Test
+class MT19937Test : public ::testing::Test
 {
 protected:
     std::random_device rd;
     std::mt19937 mt_base;
     std::unique_ptr<mt19937> mt_impl;
+
+    MT19937Test()
+        : mt_impl(std::make_unique<mt19937>())
+    {
+    }
 
     void seed_mts()
     {
@@ -27,7 +32,7 @@ protected:
     }
 };
 
-TEST_F(mt19937Test, Generator)
+TEST_F(MT19937Test, Generator)
 {
     for (int _ = 0; _ < SEEDS; _++)
     {
@@ -40,7 +45,7 @@ TEST_F(mt19937Test, Generator)
     }
 }
 
-TEST_F(mt19937Test, PredictorSingle)
+TEST_F(MT19937Test, PredictorSingle)
 {
     for (int _ = 0; _ < SEEDS; _++)
     {
@@ -56,7 +61,7 @@ TEST_F(mt19937Test, PredictorSingle)
     }
 }
 
-TEST_F(mt19937Test, PredictorMany)
+TEST_F(MT19937Test, PredictorMany)
 {
     for (int _ = 0; _ < SEEDS; _++)
     {
