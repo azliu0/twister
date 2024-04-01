@@ -17,20 +17,62 @@ class mt19937Test : public ::testing::Test
 protected:
     std::random_device rd;
     std::mt19937 mt_base;
-    mt19937 mt_impl;
+    std::unique_ptr<mt19937> mt_impl;
+
+    void seed_mts()
+    {
+        uint32_t seed = this->rd();
+        this->mt_base.seed(seed);
+        seed_rand(mt_impl.get(), seed);
+    }
 };
 
-TEST_F(mt19937Test, generator)
+TEST_F(mt19937Test, Generator)
 {
     for (int _ = 0; _ < SEEDS; _++)
     {
-        uint32_t seed = rd();
-        mt_base.seed(seed);
-        seed_rand(&mt_impl, seed);
+        seed_mts();
 
         for (int i = 0; i < SEQ_LEN; i++)
         {
-            EXPECT_EQ(mt_base(), gen_rand(&mt_impl));
+            EXPECT_EQ(mt_base(), gen_rand(mt_impl.get()));
+        }
+    }
+}
+
+TEST_F(mt19937Test, PredictorSingle)
+{
+    for (int _ = 0; _ < SEEDS; _++)
+    {
+        seed_mts();
+        uint32_t state[n];
+
+        for (int i = 0; i < n; i++)
+        {
+            state[i] = mt_base();
+        }
+
+        EXPECT_EQ(mt_base(), predict(mt_impl.get(), state));
+    }
+}
+
+TEST_F(mt19937Test, PredictorMany)
+{
+    for (int _ = 0; _ < SEEDS; _++)
+    {
+        seed_mts();
+        uint32_t state[n];
+
+        for (int i = 0; i < n; i++)
+        {
+            state[i] = mt_base();
+        }
+
+        EXPECT_EQ(mt_base(), predict(mt_impl.get(), state));
+
+        for (int i = 0; i < SEQ_LEN; i++)
+        {
+            EXPECT_EQ(mt_base(), gen_rand(mt_impl.get()));
         }
     }
 }
