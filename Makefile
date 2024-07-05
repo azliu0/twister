@@ -9,15 +9,15 @@ LIB_SRC=mt19937.c
 LIB_OBJ=$(LIB_SRC:.c=.o)
 
 # program source
-PROG_SRC=mersenne.c
+PROG_SRC=twister.c
 
 # main challenge binary
-PROG_TARGET=challenge/mersenne
+PROG_TARGET=challenge/twister
 
 # binary with mt19937 dynamically linked
 # not used in challenge but this hides the mt19937
 # implementations in the compiled executable
-PROG_TARGET_LINKED=challenge/mersenne_linked
+PROG_TARGET_LINKED=challenge/twister_linked
 
 .PHONY: all clean
 

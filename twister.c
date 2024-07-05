@@ -1,8 +1,8 @@
 /**
- *    file: mersenne.c
+ *    file: twister.c
  *    author: azliu0
  *    date: 3/30/2024
- *    source code for mersenne, a HackMIT 2024 puzzle challenge
+ *    source code for twister, a HackMIT 2024 puzzle challenge
  **/
 
 #include <fcntl.h>
