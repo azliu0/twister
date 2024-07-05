@@ -173,7 +173,7 @@ void welcome()
     puts("");
     puts("       .-\"-.");
     puts("      /  ,~a\\_");
-    puts("      \\  \\__))>     welcome to MERSENNE");
+    puts("      \\  \\__))>     welcome to TWISTER");
     puts("      ,) .\" \\        arithmetic game");
     puts("     /  (    \\");
     puts("    /   )    ;     [c] canary select");
