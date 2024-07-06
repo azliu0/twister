@@ -1,6 +1,6 @@
 # compile flags
 CC=gcc
-CFLAGS=-fno-stack-protector
+CFLAGS=-fno-stack-protector -O0
 LDFLAGS=-L. -lmt19937
 LIB_NAME=libmt19937.so
 
