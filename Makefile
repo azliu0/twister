@@ -1,6 +1,6 @@
 # compile flags
 CC=gcc
-CFLAGS=-fno-stack-protector
+CFLAGS=-fno-stack-protector -O0
 LDFLAGS=-L. -lmt19937
 LIB_NAME=libmt19937.so
 
@@ -10,18 +10,23 @@ LIB_OBJ=$(LIB_SRC:.c=.o)
 
 # program source
 PROG_SRC=twister.c
+PROG_TEST_SRC=t_mt19937.cpp
 
 # main challenge binary
-PROG_TARGET=challenge/twister
+PROG_TARGET=binaries/twister
+PROG_TEST_TARGET=t_mt19937
 
 # binary with mt19937 dynamically linked
 # not used in challenge but this hides the mt19937
 # implementations in the compiled executable
-PROG_TARGET_LINKED=challenge/twister_linked
+PROG_TARGET_LINKED=binaries/twister_linked
 
-.PHONY: all clean
+.PHONY: all clean test
 
 all: $(LIB_NAME) $(PROG_TARGET) $(PROG_TARGET_LINKED)
+test:
+	g++ -std=c++17 t_mt19937.cpp mt19937.c -lgtest -o $(PROG_TEST_TARGET)
+	./$(PROG_TEST_TARGET)
 
 # compile twister object file
 %.o: %.c
@@ -41,4 +46,4 @@ $(PROG_TARGET_LINKED): $(PROG_SRC)
 	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
 
 clean:
-	rm -f $(LIB_OBJ) $(LIB_NAME) $(PROG_TARGET) $(PROG_TARGET_LINKED)
+	rm -f $(LIB_OBJ) $(LIB_NAME) $(PROG_TARGET) $(PROG_TARGET_LINKED) $(PROG_TEST_TARGET)

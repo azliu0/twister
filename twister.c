@@ -54,6 +54,7 @@ void canary()
     puts("");
 
     uint32_t canary = gen_rand(&rng);
+
     char userAction[0xff];
 
     printf("[" ANSI_GREEN "*" ANSI_CLEAR "] canary_id: %u\n", canary);
@@ -62,6 +63,10 @@ void canary()
     {
         return;
     }
+
+    printf("[" ANSI_BLUE "*" ANSI_CLEAR "]" ANSI_BLUE " user input: ");
+    printf(userAction);
+    printf(ANSI_CLEAR "\n");
 
     while (1)
     {
@@ -74,6 +79,9 @@ void canary()
             {
                 return;
             }
+            printf("[" ANSI_BLUE "*" ANSI_CLEAR "]" ANSI_BLUE " user input: ");
+            printf(userAction);
+            printf(ANSI_CLEAR "\n");
         }
         else if (userAction[0] == 'n')
         {
@@ -86,14 +94,19 @@ void canary()
             {
                 return;
             }
+            printf("[" ANSI_BLUE "*" ANSI_CLEAR "]" ANSI_BLUE " user input: ");
+            printf(userAction);
+            printf(ANSI_CLEAR "\n");
         }
     }
 }
 
 void game()
 {
-    uint32_t canary_id = gen_rand_no_state_update(&rng);
+    volatile uint32_t canary_id;
     volatile char input[0xff];
+
+    canary_id = gen_rand_no_state_update(&rng);
 
     while (1)
     {
@@ -119,7 +132,7 @@ void game()
             printf("[" ANSI_BLUE "*" ANSI_CLEAR "] %d. %d + %d: ", i + 1, first[i], second[i]);
 
             gets(input);
-
+            
             if (strcmp(input, ans) == 0)
             {
                 printf("[" ANSI_GREEN "*" ANSI_CLEAR "]" ANSI_GREEN " Correct!" ANSI_CLEAR "\n");
@@ -127,9 +140,6 @@ void game()
             else
             {
                 printf("[" ANSI_RED "*" ANSI_CLEAR "]" ANSI_RED " Wrong!" ANSI_CLEAR "\n");
-                printf("[" ANSI_RED "*" ANSI_CLEAR "]" ANSI_RED " Your answer was: ");
-                printf(input);
-                printf(ANSI_CLEAR "\n");
                 i--;
             }
         }
@@ -163,7 +173,7 @@ void game()
 
     if (canary_id != gen_rand(&rng))
     {
-        printf("***** stack smashing detected *****");
+        printf("***** stack smashing detected *****\n");
         exit(1);
     }
 }

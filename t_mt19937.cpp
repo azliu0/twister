@@ -116,3 +116,21 @@ int main()
     ::testing::InitGoogleTest();
     return RUN_ALL_TESTS();
 }
+
+// [==========] Running 4 tests from 1 test suite.
+// [----------] Global test environment set-up.
+// [----------] 4 tests from MT19937Test
+// [ RUN      ] MT19937Test.Generator
+// [       OK ] MT19937Test.Generator (16 ms)
+// [ RUN      ] MT19937Test.PredictorSingle
+// [       OK ] MT19937Test.PredictorSingle (9 ms)
+// [ RUN      ] MT19937Test.PredictorMany
+// [       OK ] MT19937Test.PredictorMany (22 ms)
+// [ RUN      ] MT19937Test.PredictorSelfConsistent
+// [       OK ] MT19937Test.PredictorSelfConsistent (17 ms)
+// [----------] 4 tests from MT19937Test (66 ms total)
+// 
+// [----------] Global test environment tear-down
+// [==========] 4 tests from 1 test suite ran. (66 ms total)
+// [  PASSED  ] 4 tests.
+
