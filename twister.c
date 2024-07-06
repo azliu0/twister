@@ -23,6 +23,17 @@
 
 #define NUM_QUESTIONS 10
 
+
+// https://security.stackexchange.com/a/179074
+int foo = 0;
+void bar() {
+  asm volatile ("pop %%rdi\n\t"
+      "ret"
+      :
+      :
+      : "rdi");
+}
+
 mt19937 rng;
 
 void seed(mt19937 *rng)
@@ -243,5 +254,8 @@ int main()
     seed(&rng);
     start();
 
+    if (foo == 0x55) {
+      bar();
+    }
     return 0;
 }
