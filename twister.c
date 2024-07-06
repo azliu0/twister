@@ -132,7 +132,7 @@ void game()
             printf("[" ANSI_BLUE "*" ANSI_CLEAR "] %d. %d + %d: ", i + 1, first[i], second[i]);
 
             gets(input);
-            
+
             if (strcmp(input, ans) == 0)
             {
                 printf("[" ANSI_GREEN "*" ANSI_CLEAR "]" ANSI_GREEN " Correct!" ANSI_CLEAR "\n");

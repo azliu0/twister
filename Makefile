@@ -1,6 +1,6 @@
 # compile flags
 CC=gcc
-CFLAGS=-fno-stack-protector -O0
+CFLAGS=-fno-stack-protector
 LDFLAGS=-L. -lmt19937
 LIB_NAME=libmt19937.so
 
@@ -25,7 +25,7 @@ PROG_TARGET_LINKED=binaries/twister_linked
 
 all: $(LIB_NAME) $(PROG_TARGET) $(PROG_TARGET_LINKED)
 test:
-	g++ -std=c++17 t_mt19937.cpp mt19937.c -lgtest -o $(PROG_TEST_TARGET)
+	g++ -std=c++17 $(PROG_TEST_SRC) mt19937.c -lgtest -o $(PROG_TEST_TARGET)
 	./$(PROG_TEST_TARGET)
 
 # compile twister object file

@@ -129,8 +129,7 @@ int main()
 // [ RUN      ] MT19937Test.PredictorSelfConsistent
 // [       OK ] MT19937Test.PredictorSelfConsistent (17 ms)
 // [----------] 4 tests from MT19937Test (66 ms total)
-// 
+//
 // [----------] Global test environment tear-down
 // [==========] 4 tests from 1 test suite ran. (66 ms total)
 // [  PASSED  ] 4 tests.
-
