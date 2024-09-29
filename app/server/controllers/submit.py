@@ -4,7 +4,7 @@ import hashlib
 
 from apiflask import APIBlueprint
 from flask import jsonify, request
-from server.config import SECRET_KEY
+from server.config import FLAG, SECRET_KEY
 
 submit = APIBlueprint("submit", __name__, url_prefix="/api/submit", tag="Submit")
 
@@ -21,14 +21,18 @@ def submit_puzzle():
     if body is None:
         return jsonify({"solved": False, "message": "Invalid request"}), 400
 
-    user_id = body.get("user_id", None)
-    submission = body.get("submission", None)
+    user_id = body.get("user", None)
+    flag = body.get("flag", None)
 
-    if submission == "TODO(flag)":
+    if user_id is None or flag is None:
+        return jsonify({"solved": False, "message": "Invalid request"}), 400
+
+    # this kinda defeats the purpose of the user hashing but it's fine
+    if flag == FLAG:
         return jsonify(
             {
                 "solved": True,
-                "message": f"congrats! submit this flag to the command center to "
+                "message": f"congrats! submit this code to the command center to "
                 f"collect your points: {_get_flag(user_id)}",
             }
         ), 200

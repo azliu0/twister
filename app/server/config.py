@@ -43,3 +43,7 @@ FRONTEND_URL = cast(str, _get_config_option("FRONTEND_URL", "http://localhost:51
 BACKEND_URL = cast(str, _get_config_option("BACKEND_URL", "http://localhost:2000"))
 ALLOWED_DOMAINS = [FRONTEND_URL]
 SECRET_KEY = cast(str, _get_config_option("SECRET_KEY", "secret"))
+FLAG = cast(
+    str,
+    _get_config_option("FLAG", required=True),
+)

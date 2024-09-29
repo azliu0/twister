@@ -1,4 +1,2 @@
-.gdb_history
-.vscode
-*.o
-*.so
+__pycache__/**
+pwndbg/**

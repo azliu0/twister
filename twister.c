@@ -23,15 +23,19 @@
 
 #define NUM_QUESTIONS 10
 
-
 // https://security.stackexchange.com/a/179074
+// TODO: this may not be necessary
+// a rbp gadget exists natively in the program
+// but i can't figure out if the issue is with the gadget or smth else so just
+// injecting a rdi for now
 int foo = 0;
-void bar() {
-  asm volatile ("pop %%rdi\n\t"
-      "ret"
-      :
-      :
-      : "rdi");
+void bar()
+{
+    asm volatile("pop %%rdi\n\t"
+                 "ret"
+                 :
+                 :
+                 : "rdi");
 }
 
 mt19937 rng;
@@ -254,8 +258,9 @@ int main()
     seed(&rng);
     start();
 
-    if (foo == 0x55) {
-      bar();
+    if (foo == 0x55)
+    {
+        bar();
     }
     return 0;
 }
